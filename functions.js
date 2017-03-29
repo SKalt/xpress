@@ -1,9 +1,4 @@
 var replacements = {
-    'a':{
-	'replacement':'b',
-	'preventDefault':'true',
-	'moveCursor': 'end'
-    }
 }; 
 // go for whitespace delimited // have option?
 const remove = (el)=>el.parentNode.removeChild(el);
