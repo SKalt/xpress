@@ -1,4 +1,4 @@
-var replacements = {'a':'b'};
+var replacements = {'a':'b'}; 
 // go for whitespace delimited // have option?
 
 function replaceLastWord(replacements){
@@ -18,7 +18,6 @@ function replaceLastWord(replacements){
     }
     return text;
 }
-
 function setCaretPosition(pos){
     var sel = window.getSelection();
     var node = sel.anchorNode;
@@ -31,13 +30,23 @@ function setCaretPosition(pos){
     }
 }
 
+function listenTo(elementArray, cb){
+    for (let el of elementArray){
+	el.addEventListener(
+	    'keydown',
+	    function(e){
+		if (e.keyCode == 32){ // space
+		    replaceLastWord(replacements);
+		}
+	    }
+	);
+    }
+}
 
-function add(el){
-    el.addEventListener(
-	'keydown',
-	function(e){
-	    
-	}
+function init(){
+    let arr = document.querySelectorAll(
+	'textarea, [contenteditable], input[type=text]'
     );
+    listenTo(arr);
 }
 
