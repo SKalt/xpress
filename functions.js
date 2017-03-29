@@ -73,12 +73,20 @@ function init(){
 	'textarea, [contenteditable], input[type=text]'
     );
     listenTo(arr);
+    let reminder = document.createElement('button');
+    reminder.style = 'position: fixed; left:0px; bottom:0px; opacity: 50%,';
+    reminder.onclick = function(){
+	debugger;
+	this.parentNode.append(popupContainer(replacements));
+    };
+    reminder.textContent = 'Edit replacements';
+    reminder.contenteditable = false;
+    document.body.append(reminder);
 }
 
 init();
 
-
-function display(replcements){
+function popupContainer(replcements){
     const makePopupContainer = function(){
 	let popup = document.createElement('div');
 	popup.style = `font-family: monospace;
@@ -186,4 +194,4 @@ function display(replcements){
     return makePopupContainer();
 }
 
-document.querySelector('body').append(display(replacements));
+//document.querySelector('body').append(display(replacements));
