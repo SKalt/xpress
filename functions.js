@@ -1,12 +1,31 @@
 var replacements = {
+    '\\f': {replacement:'\\frac{}{}',  preventDefault:true,moveCursor:'3'},
+    '\\i': {replacement:'\\int',  preventDefault:true,moveCursor:'3'},
+    '\\s':{replacement:'\\sum{}{}',  preventDefault:true,moveCursor:'3'},
+    '\\m':{
+	replacement:'\\begin{bmatrix}\n\n\\end{bmatrix}\n',
+	preventDefault:true,
+	moveCursor:'17'
+    },
+    '|-->':{replacement:'\\longmapsto',preventDefault:false,moveCursor:'end'},
+    '<=>':{replacement:'\\LeftRightarrow',preventDefault:false,moveCursor:'end'},
+    '-->':{replacement:'\\longrightarrow',preventDefault:false,moveCursor:'end'},
+    '<--':{replacement: '\\longleftarrow',  preventDefault:false,moveCursor:'end'},
+    '<->':{replacement:'\\lefrtrightarrow',preventDefault:false,moveCursor:'end'},
+    '|->':{replacement:'\\mapsto',preventDefault:false,moveCursor:'end'},
+    '<-':{replacement:'\\leftarrow',preventDefault:false,moveCursor:'end'},
+    '->':{replacement:'\\rightarrow',preventDefault:false,moveCursor:'end'},
+    '=>':{replacement:'\\Rightarrow',preventDefault:false,moveCursor:'end'},
+    '<=':{replacement:'\\Leftarow',preventDefault:false,moveCursor:'end'}
 }; 
 // go for whitespace delimited // have option?
-const remove = (el)=>el.parentNode.removeChild(el);
+const remove = (el) => el.parentNode.removeChild(el);
 
 function replaceLastWord(replacements, keydownEvent){
     let sel = window.getSelection();
     let parent = sel.anchorNode;
     let text = '';
+    debugger;
     if (parent.nodeType == 3){ // text node
 	let end = sel.getRangeAt(0).endOffset;
 	text = parent.nodeValue.slice(0, end);
@@ -45,7 +64,7 @@ function handleReplacement(params, event, initialCaretIndex){
 	setCaretAt(initialCaretIndex - 1);
     } else if (/^end$/i.exec(params.moveCursor)){
 	setCaretAt(initialCaretIndex + params.replacement.length - 1);
-    } else if (/^\d$/.exec(params.moveCursor)){
+    } else if (/^\d+$/.exec(params.moveCursor)){
 	setCaretAt(initialCaretIndex +  Number(params.moveCursor) - 1);
     }
 }
@@ -55,7 +74,8 @@ function listenTo(elementArray, cb){
 	el.addEventListener(
 	    'keydown',
 	    function(e){
-		if (e.keyCode == 32){ // space
+		console.log(e.keyCode);
+		if (e.keyCode == 32){// space
 		    replaceLastWord(replacements, e);
 		}
 	    }
@@ -71,7 +91,6 @@ function init(){
     let reminder = document.createElement('button');
     reminder.style = 'position: fixed; left:0px; bottom:0px; opacity: 50%,';
     reminder.onclick = function(){
-	debugger;
 	this.parentNode.append(popupContainer(replacements));
     };
     reminder.textContent = 'Edit replacements';
